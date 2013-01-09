@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hello Android</string>
+    <string name="hello">Hello {0} !</string>
+    <string name="menu_settings">Settings</string>
+    <string name="name_hint">Input your name</string>
+    <string name="nameButton_label">Valid</string>
+
+</resources>
