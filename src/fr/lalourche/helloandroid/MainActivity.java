@@ -51,7 +51,7 @@ public class MainActivity extends Activity
    * Called on click on Valid button.
    * @param v calling view
    */
-  public final void valid(View v)
+  private void valid(View v)
   {
     String format = (String) v.getContext().getResources()
         .getText(R.string.hello);
