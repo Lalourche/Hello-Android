@@ -4,7 +4,9 @@ import java.text.MessageFormat;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,9 +21,10 @@ public class MainActivity extends Activity
 
   /** Text to display. */
   private TextView text_;
-
   /** Name to input. */
   private EditText name_;
+  /** Valid button. */
+  private Button validButton_;
 
   @Override
   protected final void onCreate(Bundle savedInstanceState)
@@ -35,16 +38,41 @@ public class MainActivity extends Activity
     text_ = (TextView) layout.findViewById(R.id.text);
     text_.setText("");
 
-    Button validButton = (Button) layout.findViewById(R.id.nameButton);
-    validButton.setOnClickListener(new View.OnClickListener()
+    validButton_ = (Button) layout.findViewById(R.id.nameButton);
+    validButton_.setOnTouchListener(new View.OnTouchListener()
     {
-      public void onClick(View v)
+      @Override
+      public boolean onTouch(View v, MotionEvent event)
       {
-        valid(v);
+        return validOnTouch(v, event);
       }
     });
 
+    // Set keyboard hidden by default
+    getWindow().setSoftInputMode(
+        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     setContentView(layout);
+  }
+
+  /**
+   * Manages the onTouch event on the valid button.
+   * @param v the view
+   * @param event the MotionEvent
+   * @return true if the event is consumed
+   */
+  private boolean validOnTouch(View v, MotionEvent event)
+  {
+    // Log.d("Lalourche", "onTouch " + event.getX() + " : " + event.getY());
+    updateSize(v, event);
+
+    // The click event is now caught by this one
+    if (event.getAction() == MotionEvent.ACTION_UP) {
+      valid(v);
+    }
+
+    // Next event must be caught
+    return true;
   }
 
   /**
@@ -56,6 +84,26 @@ public class MainActivity extends Activity
     String format = (String) v.getContext().getResources()
         .getText(R.string.hello);
     text_.setText(MessageFormat.format(format, name_.getText()));
+  }
+
+  /**
+   * Called on touch on Valid button.
+   * @param v calling view
+   * @param event the current MotionEvent
+   */
+  private void updateSize(View v, MotionEvent event)
+  {
+    // Get current pointer absolute position
+    float currentX = event.getRawX();
+    float currentY = event.getRawY();
+//    Log.d("Lalourche", "updateSize " + currentX + " : " + currentY);
+
+    // Compute font size
+    float newTextSize =
+        Math.abs(currentX - (validButton_.getWidth() / 2)) +
+        Math.abs(currentY - (validButton_.getHeight() / 2));
+
+    validButton_.setTextSize(newTextSize);
   }
 
 }
