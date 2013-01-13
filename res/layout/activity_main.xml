@@ -25,7 +25,8 @@
         android:layout_above="@+id/text"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/name"
-        android:text="@string/nameButton_label" />
+        android:text="@string/nameButton_label"
+        android:background="@drawable/button_background" />
 
     <TextView
         android:id="@+id/text"
