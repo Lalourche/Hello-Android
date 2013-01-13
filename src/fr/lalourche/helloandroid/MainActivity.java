@@ -4,12 +4,15 @@ import java.text.MessageFormat;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Hello Android.
@@ -34,6 +37,28 @@ public class MainActivity extends Activity
     View layout = View.inflate(this, R.layout.activity_main, null);
 
     name_ = (EditText) layout.findViewById(R.id.name);
+    name_.addTextChangedListener(new TextWatcher()
+    {
+      @Override
+      public void onTextChanged(
+          CharSequence s, int start, int before, int count)
+      {
+        processName(s);
+      }
+
+      @Override
+      public void beforeTextChanged(
+          CharSequence s, int start, int count, int after)
+      {
+        // Do nothing
+      }
+
+      @Override
+      public void afterTextChanged(Editable s)
+      {
+        // Do nothing
+      }
+    });
 
     text_ = (TextView) layout.findViewById(R.id.text);
     text_.setText("");
@@ -53,6 +78,20 @@ public class MainActivity extends Activity
         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     setContentView(layout);
+  }
+
+  /**
+   * Process the input name even if no other action is triggered.
+   * @param s the current name input
+   */
+  private void processName(CharSequence s)
+  {
+    CharSequence adminName = name_.getResources().getText(R.string.adminName);
+    if (s.toString().equals(adminName.toString())) {
+      Toast.makeText(
+          getApplicationContext(), R.string.toast, Toast.LENGTH_SHORT)
+          .show();
+    }
   }
 
   /**

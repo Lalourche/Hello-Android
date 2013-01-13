@@ -6,5 +6,6 @@
     <string name="menu_settings">Options</string>
     <string name="name_hint">Entrez votre nom</string>
     <string name="nameButton_label">Valider</string>
+    <string name="toast">Un toast pour toi !</string>
 
 </resources>
