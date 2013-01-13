@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,7 +65,16 @@ public class MainActivity extends Activity
     text_ = (TextView) layout.findViewById(R.id.text);
     text_.setText("");
 
+
     validButton_ = (Button) layout.findViewById(R.id.nameButton);
+
+    // Add an animation on start up
+    Animation animation =
+        AnimationUtils.loadAnimation(getApplicationContext(),
+            R.anim.view_animation);
+    validButton_.startAnimation(animation);
+
+    // Add touch listener
     validButton_.setOnTouchListener(new View.OnTouchListener()
     {
       @Override
