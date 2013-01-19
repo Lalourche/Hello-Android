@@ -1,11 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<fr.lalourche.helloandroid.layout.SliderLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/sliderLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center|center_vertical|top"
     android:orientation="vertical"
     tools:context=".MainActivity" >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menuLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
+
+    <ToggleButton
+        android:id="@+id/menuButton"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menuButton_label"
+        android:textOff="@string/menuButton_label"
+        android:textOn="@string/menuButton_label" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/divider"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:scaleType="fitXY"
+        android:background="@color/blue"
+        android:src="@android:drawable/divider_horizontal_textfield" />
 
     <EditText
         android:id="@+id/name"
@@ -14,15 +51,14 @@
         android:ems="10"
         android:hint="@string/name_hint"
         android:inputType="textPersonName"
-        android:textSize="20sp" >
-
-        <requestFocus />
-    </EditText>
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/nameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.5"
         android:text="@string/nameButton_label" />
 
     <TextView
@@ -32,4 +68,4 @@
         android:text="@string/hello"
         android:textSize="20sp" />
 
-</LinearLayout>
+</fr.lalourche.helloandroid.layout.SliderLayout>
