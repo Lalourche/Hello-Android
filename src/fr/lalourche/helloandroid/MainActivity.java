@@ -2,6 +2,8 @@ package fr.lalourche.helloandroid;
 
 import java.text.MessageFormat;
 
+import fr.lalourche.helloandroid.layout.SliderLayout;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 /**
  * Hello Android.
@@ -24,10 +27,14 @@ import android.widget.Toast;
 public class MainActivity extends Activity
 {
 
+  /** The layout. */
+  private SliderLayout layout_;
   /** Text to display. */
   private TextView text_;
   /** Name to input. */
   private EditText name_;
+  /** Menu button. */
+  private ToggleButton menuButton_;
   /** Valid button. */
   private Button validButton_;
 
@@ -36,9 +43,11 @@ public class MainActivity extends Activity
   {
     super.onCreate(savedInstanceState);
 
-    View layout = View.inflate(this, R.layout.activity_main, null);
+    layout_ = (SliderLayout) View.inflate(this, R.layout.activity_main, null);
+    View menuLayout = layout_.findViewById(R.id.menuLayout);
+    layout_.setToHide(menuLayout);
 
-    name_ = (EditText) layout.findViewById(R.id.name);
+    name_ = (EditText) layout_.findViewById(R.id.name);
     name_.addTextChangedListener(new TextWatcher()
     {
       @Override
@@ -62,11 +71,23 @@ public class MainActivity extends Activity
       }
     });
 
-    text_ = (TextView) layout.findViewById(R.id.text);
+    text_ = (TextView) layout_.findViewById(R.id.text);
     text_.setText("");
 
 
-    validButton_ = (Button) layout.findViewById(R.id.nameButton);
+    menuButton_ = (ToggleButton) layout_.findViewById(R.id.menuButton);
+    menuButton_.setChecked(true);
+    menuButton_.setOnClickListener(new View.OnClickListener()
+    {
+
+      @Override
+      public void onClick(View v)
+      {
+        menuClick(v);
+      }
+    });
+
+    validButton_ = (Button) layout_.findViewById(R.id.nameButton);
 
     // Add an animation on start up
     Animation animation =
@@ -88,7 +109,17 @@ public class MainActivity extends Activity
     getWindow().setSoftInputMode(
         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-    setContentView(layout);
+    setContentView(layout_);
+  }
+
+  /**
+   * Show/hide menu.
+   * @param v the view
+   */
+  protected final void menuClick(View v)
+  {
+    boolean isMenuOpen = layout_.toggle();
+    menuButton_.setChecked(isMenuOpen);
   }
 
   /**
