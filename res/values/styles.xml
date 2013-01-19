@@ -19,7 +19,7 @@
     
     <!-- Default button -->
     <style name="Button">
-        <item name="android:background">@drawable/button_background</item>
+        <item name="android:background">@color/button_colors</item>
     </style>
 
 </resources>
