@@ -11,5 +11,6 @@
     <string name="adminName">Chub</string>
     <string name="r2d2">R2D2</string>
     <string name="darthvader">Darth Vader</string>
+    <string name="aboutLabel">About</string>
 
 </resources>
