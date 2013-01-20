@@ -9,5 +9,8 @@
     <string name="menuButton_label">Menu</string>
     <string name="divider">Séparateur</string>
     <string name="toast">Un toast pour toi !</string>
+    <string name="adminName">Chub</string>
+    <string name="r2d2">R2D2</string>
+    <string name="darthvader">Dark Vador</string>
 
 </resources>

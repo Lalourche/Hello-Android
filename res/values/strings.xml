@@ -3,9 +3,13 @@
 
     <string name="app_name">Hello Android</string>
     <string name="hello">Hello {0} !</string>
-    <string name="menu_settings">Settings</string>
     <string name="name_hint">Input your name</string>
     <string name="nameButton_label">Valid</string>
+    <string name="menuButton_label">Menu</string>
+    <string name="divider">Divider</string>
+    <string name="toast">A toast for you !</string>
     <string name="adminName">Chub</string>
+    <string name="r2d2">R2D2</string>
+    <string name="darthvader">Darth Vader</string>
 
 </resources>

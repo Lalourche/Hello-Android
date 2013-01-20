@@ -1,13 +1,15 @@
 package fr.lalourche.helloandroid;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import fr.lalourche.helloandroid.layout.SliderLayout;
+import fr.lalourche.helloandroid.listener.NameListener;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,8 +17,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 /**
@@ -26,6 +30,10 @@ import android.widget.ToggleButton;
  */
 public class MainActivity extends Activity
 {
+  /** Key for menu text adapter. */
+  private static final String MENU_TEXT = "menu.text";
+  /** Key for menu image adapter. */
+  private static final String MENU_IMAGE = "menu.image";
 
   /** The layout. */
   private SliderLayout layout_;
@@ -45,31 +53,11 @@ public class MainActivity extends Activity
 
     layout_ = (SliderLayout) View.inflate(this, R.layout.activity_main, null);
     View menuLayout = layout_.findViewById(R.id.menuLayout);
+    buildMenu();
     layout_.setToHide(menuLayout);
 
     name_ = (EditText) layout_.findViewById(R.id.name);
-    name_.addTextChangedListener(new TextWatcher()
-    {
-      @Override
-      public void onTextChanged(
-          CharSequence s, int start, int before, int count)
-      {
-        processName(s);
-      }
-
-      @Override
-      public void beforeTextChanged(
-          CharSequence s, int start, int count, int after)
-      {
-        // Do nothing
-      }
-
-      @Override
-      public void afterTextChanged(Editable s)
-      {
-        // Do nothing
-      }
-    });
+    name_.addTextChangedListener(new NameListener(this));
 
     text_ = (TextView) layout_.findViewById(R.id.text);
     text_.setText("");
@@ -113,6 +101,53 @@ public class MainActivity extends Activity
   }
 
   /**
+   * Builds the menu content.
+   */
+  private void buildMenu()
+  {
+    CharSequence[] texts = new CharSequence[] {
+      getResources().getText(R.string.r2d2),
+      getResources().getText(R.string.darthvader),
+    };
+    int[] images = new int[] {
+      R.drawable.r2d2,
+      R.drawable.darthvader,
+    };
+    String[] from = new String[] {
+      MENU_TEXT,
+      MENU_IMAGE,
+    };
+    int[] to = new int[] {
+      R.id.menuText,
+      R.id.menuImage,
+    };
+
+    List<HashMap<String, Object>> list =
+        new ArrayList<HashMap<String, Object>>();
+    HashMap<String, Object> element;
+
+    // Building list
+    for (int i = 0; i < texts.length && i < images.length; i++) {
+      element = new HashMap<String, Object>();
+      element.put(MENU_TEXT, texts[i]);
+      element.put(MENU_IMAGE, Integer.toString(images[i]));
+      list.add(element);
+    }
+
+    // Build adapter
+    ListAdapter adapter = new SimpleAdapter(
+        this,
+        list,
+        R.layout.menu_layout,
+        from,
+        to);
+
+    // Associate adapter to menu
+    ListView menuList = (ListView) layout_.findViewById(R.id.menuList);
+    menuList.setAdapter(adapter);
+  }
+
+  /**
    * Show/hide menu.
    * @param v the view
    */
@@ -120,20 +155,6 @@ public class MainActivity extends Activity
   {
     boolean isMenuOpen = layout_.toggle();
     menuButton_.setChecked(isMenuOpen);
-  }
-
-  /**
-   * Process the input name even if no other action is triggered.
-   * @param s the current name input
-   */
-  private void processName(CharSequence s)
-  {
-    CharSequence adminName = name_.getResources().getText(R.string.adminName);
-    if (s.toString().equals(adminName.toString())) {
-      Toast.makeText(
-          getApplicationContext(), R.string.toast, Toast.LENGTH_SHORT)
-          .show();
-    }
   }
 
   /**
