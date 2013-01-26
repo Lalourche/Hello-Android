@@ -8,7 +8,6 @@ import fr.lalourche.helloandroid.listener.ValidButtonListener;
 import fr.lalourche.helloandroid.view.MainActivityMenu;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -103,7 +102,8 @@ public class MainActivity extends Activity
 
       case R.id.aboutMenuItem:
         // Show about dialog
-        DialogFragment dialog = new AboutDialog();
+        AboutDialog dialog = new AboutDialog();
+        dialog.setContext(this);
         String tag = getResources().getString(R.string.tag_about_dialog);
         dialog.show(getFragmentManager(), tag);
         break;
