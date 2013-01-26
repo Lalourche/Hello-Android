@@ -8,10 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.lalourche.helloandroid.R;
+import fr.lalourche.helloandroid.VadorActivity;
 import fr.lalourche.helloandroid.layout.SliderLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -20,7 +24,7 @@ import android.widget.SimpleAdapter;
  * @author Lalourche
  *
  */
-public class MainActivityMenu
+public class MainActivityMenu implements OnItemClickListener
 {
   /** Key for menu text adapter. */
   private static final String MENU_TEXT = "menu.text";
@@ -72,7 +76,8 @@ public class MainActivityMenu
     HashMap<String, Object> element;
 
     // Building list
-    for (int i = 0; i < texts.length && i < images.length; i++) {
+    for (int i = 0; i < texts.length && i < images.length; i++)
+    {
       element = new HashMap<String, Object>();
       element.put(MENU_TEXT, texts[i]);
       element.put(MENU_IMAGE, Integer.toString(images[i]));
@@ -90,6 +95,7 @@ public class MainActivityMenu
     // Associate adapter to menu
     ListView menuList = (ListView) layout_.findViewById(R.id.menuList);
     menuList.setAdapter(adapter);
+    menuList.setOnItemClickListener(this);
   }
 
   /**
@@ -98,5 +104,37 @@ public class MainActivityMenu
   public final SliderLayout getLayout()
   {
     return layout_;
+  }
+
+  /* (non-Javadoc)
+   * @see android.view.View.OnClickListener#onClick(android.view.View)
+   */
+  /* (non-Javadoc)
+   * @see android.widget.AdapterView.OnItemClickListener
+   * #onItemClick(android.widget.AdapterView, android.view.View, int, long)
+   */
+  @Override
+  public final void onItemClick(
+      AdapterView<?> parent,
+      View view,
+      int position,
+      long id)
+  {
+    HashMap<?, ?> itemMap =
+        (HashMap<?, ?>) parent.getItemAtPosition(position);
+    String itemText = (String) itemMap.get(MENU_TEXT);
+
+    // Robustness
+    if (itemText == null)
+    {
+      return;
+    }
+
+    if (itemText.equals(context_.getText(R.string.darthvader)))
+    {
+      // Open Vador activity
+      Intent nextActivity = new Intent(context_, VadorActivity.class);
+      context_.startActivity(nextActivity);
+    }
   }
 }

@@ -3,7 +3,6 @@
 
     <string name="app_name">Bonjour Android</string>
     <string name="hello">Bonjour {0} !</string>
-    <string name="menu_settings">Options</string>
     <string name="name_hint">Entrez votre nom</string>
     <string name="nameButton_label">Valider</string>
     <string name="menuButton_label">Menu</string>
