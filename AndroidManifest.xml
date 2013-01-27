@@ -29,6 +29,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fr.lalourche.helloandroid.MainActivity" />
         </activity>
+        <activity
+            android:name="fr.lalourche.helloandroid.settings.SettingsActivity"
+            android:label="@string/settingsLabel" >
+        </activity>
     </application>
 
 </manifest>

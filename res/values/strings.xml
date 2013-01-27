@@ -12,5 +12,9 @@
     <string name="r2d2">R2D2</string>
     <string name="darthvader">Darth Vader</string>
     <string name="aboutLabel">About</string>
+    <string name="settingsLabel">Settings</string>
+    <string name="themeLabel">Theme (needs restart)</string>
+    <string name="theme.black">BLACK</string>
+    <string name="theme.white">WHITE</string>
 
 </resources>

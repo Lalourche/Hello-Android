@@ -6,5 +6,10 @@
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/aboutLabel">
     </item>
+    <item
+        android:id="@+id/settingsMenuItem"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/settingsLabel">
+    </item>
 
 </menu>

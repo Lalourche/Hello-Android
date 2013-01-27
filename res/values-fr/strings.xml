@@ -11,5 +11,8 @@
     <string name="adminName">Chub</string>
     <string name="r2d2">R2D2</string>
     <string name="darthvader">Dark Vador</string>
+    <string name="aboutLabel">A propos</string>
+    <string name="settingsLabel">Préférences</string>
+    <string name="themeLabel">Thème (nécessite redémarrage)</string>
 
 </resources>

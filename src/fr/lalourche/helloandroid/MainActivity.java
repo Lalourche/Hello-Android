@@ -5,10 +5,14 @@ import fr.lalourche.helloandroid.layout.SliderLayout;
 import fr.lalourche.helloandroid.listener.MenuButtonListener;
 import fr.lalourche.helloandroid.listener.NameListener;
 import fr.lalourche.helloandroid.listener.ValidButtonListener;
+import fr.lalourche.helloandroid.settings.SettingsActivity;
 import fr.lalourche.helloandroid.view.MainActivityMenu;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -74,7 +78,30 @@ public class MainActivity extends Activity
     getWindow().setSoftInputMode(
         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+    // Set theme according to preferences
+    setTheme();
+
     setContentView(layout_);
+  }
+
+  /**
+   * Set theme according to preferences.
+   */
+  private void setTheme()
+  {
+    // Retrieve theme from preferences
+    SharedPreferences sharedPref =
+        PreferenceManager.getDefaultSharedPreferences(this);
+    String themePreference = sharedPref.getString("pref_theme", "");
+
+    int themeId = android.R.style.Theme;
+    if (themePreference != null &&
+        themePreference.equals((String) getText(R.string.theme_white)))
+    {
+      themeId = android.R.style.Theme_Light;
+    }
+
+    setTheme(themeId);
   }
 
   /* (non-Javadoc)
@@ -98,14 +125,19 @@ public class MainActivity extends Activity
   {
     boolean actionManaged = false;
 
-    switch (item.getItemId()) {
-
+    switch (item.getItemId())
+    {
       case R.id.aboutMenuItem:
         // Show about dialog
         AboutDialog dialog = new AboutDialog();
         dialog.setContext(this);
         String tag = getResources().getString(R.string.tag_about_dialog);
         dialog.show(getFragmentManager(), tag);
+        break;
+      case R.id.settingsMenuItem:
+        // Show settings
+        Intent settingsActivity = new Intent(this, SettingsActivity.class);
+        startActivity(settingsActivity);
         break;
       default:
         break;
