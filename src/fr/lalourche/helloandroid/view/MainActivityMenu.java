@@ -3,22 +3,23 @@
  */
 package fr.lalourche.helloandroid.view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import fr.lalourche.helloandroid.R;
 import fr.lalourche.helloandroid.VadorActivity;
+import fr.lalourche.helloandroid.db.DatabaseContract;
+import fr.lalourche.helloandroid.db.DatabaseHelper;
 import fr.lalourche.helloandroid.layout.SliderLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 /**
  * @author Lalourche
@@ -26,15 +27,12 @@ import android.widget.SimpleAdapter;
  */
 public class MainActivityMenu implements OnItemClickListener
 {
-  /** Key for menu text adapter. */
-  private static final String MENU_TEXT = "menu.text";
-  /** Key for menu image adapter. */
-  private static final String MENU_IMAGE = "menu.image";
-
   /** The layout. */
   private SliderLayout layout_;
-  /** current context. */
+  /** Current context. */
   private Context context_;
+  /** DFatabase helper. */
+  private SQLiteOpenHelper databaseHelper_;
 
   /**
    * @param context current context
@@ -42,6 +40,7 @@ public class MainActivityMenu implements OnItemClickListener
   public MainActivityMenu(Context context)
   {
     context_ = context;
+    databaseHelper_ = new DatabaseHelper(context_);
     layout_ = (SliderLayout) View.inflate(
         context_, R.layout.activity_main, null);
     View menuLayout = layout_.findViewById(R.id.menuLayout);
@@ -54,43 +53,46 @@ public class MainActivityMenu implements OnItemClickListener
    */
   private void buildMenu()
   {
-    CharSequence[] texts = new CharSequence[] {
-      context_.getText(R.string.r2d2),
-      context_.getText(R.string.darthvader),
+    SQLiteDatabase db = databaseHelper_.getReadableDatabase();
+
+    // Define a projection that specifies which columns from the database
+    // you will actually use after this query.
+    String[] projection = {
+      DatabaseContract.StarWars._ID,
+      DatabaseContract.StarWars.COLUMN_NAME_TEXT,
+      DatabaseContract.StarWars.COLUMN_NAME_IMAGE,
     };
-    int[] images = new int[] {
-      R.drawable.r2d2,
-      R.drawable.darthvader,
+
+    // Selecting the wole table
+    Cursor c = db.query(
+        DatabaseContract.StarWars.TABLE_NAME,
+        projection,
+        null,
+        null,
+        null,
+        null,
+        null);
+
+    // List of columns to display
+    String[] from = {
+      DatabaseContract.StarWars.COLUMN_NAME_TEXT,
+      DatabaseContract.StarWars.COLUMN_NAME_IMAGE,
     };
-    String[] from = new String[] {
-      MENU_TEXT,
-      MENU_IMAGE,
-    };
+
+    // List of view that will contain the individual values
     int[] to = new int[] {
       R.id.menuText,
       R.id.menuImage,
     };
 
-    List<HashMap<String, Object>> list =
-        new ArrayList<HashMap<String, Object>>();
-    HashMap<String, Object> element;
-
-    // Building list
-    for (int i = 0; i < texts.length && i < images.length; i++)
-    {
-      element = new HashMap<String, Object>();
-      element.put(MENU_TEXT, texts[i]);
-      element.put(MENU_IMAGE, Integer.toString(images[i]));
-      list.add(element);
-    }
-
     // Build adapter
-    ListAdapter adapter = new SimpleAdapter(
+    SimpleCursorAdapter adapter = new SimpleCursorWithBlobAdapter(
         context_,
-        list,
         R.layout.menu_layout,
+        c,
         from,
-        to);
+        to,
+        CursorAdapter.NO_SELECTION);
 
     // Associate adapter to menu
     ListView menuList = (ListView) layout_.findViewById(R.id.menuList);
@@ -120,9 +122,9 @@ public class MainActivityMenu implements OnItemClickListener
       int position,
       long id)
   {
-    HashMap<?, ?> itemMap =
-        (HashMap<?, ?>) parent.getItemAtPosition(position);
-    String itemText = (String) itemMap.get(MENU_TEXT);
+    Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+    String itemText = cursor.getString(cursor.getColumnIndexOrThrow(
+        DatabaseContract.StarWars.COLUMN_NAME_TEXT));
 
     // Robustness
     if (itemText == null)
